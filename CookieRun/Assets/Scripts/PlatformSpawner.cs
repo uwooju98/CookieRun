@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlatformSpawner : MonoBehaviour
 {
-    public GameObject obstaclePlatformPrefab;
-    public int count = 4;
+    public GameObject[] PlatformPrefabs;
+    public int count = 10; // 생성할 발판의 개수
 
     public float timeBetSpawnMin = 0.25f;
     public float timeBetSpawnMax = 0.45f;
@@ -20,7 +20,7 @@ public class PlatformSpawner : MonoBehaviour
     private GameObject[] platforms;
     private int currentIndex = 0;
 
-    private Vector2 poolPosition = new Vector2(0, -25);
+    private Vector2 poolPosition = new Vector2(0, -25f);
     private float lastSpawnTime;
 
     private void Start()
@@ -29,7 +29,7 @@ public class PlatformSpawner : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            platforms[i] = Instantiate(obstaclePlatformPrefab,poolPosition,Quaternion.identity);
+            platforms[i] = Instantiate(PlatformPrefabs[Random.Range(0,5)], poolPosition,Quaternion.identity);
         }
 
         lastSpawnTime = 0f;
@@ -61,9 +61,6 @@ public class PlatformSpawner : MonoBehaviour
             {
                 currentIndex = 0;
             }
-            
-            
-
         }
         
     }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Scroller : MonoBehaviour
 {
-    private float speed = 9f;
+    private float speed = 10f;
 
 
     private void Awake()

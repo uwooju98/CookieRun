@@ -1,17 +1,15 @@
 using UnityEngine;
 
-public class ObstaclePlatform : MonoBehaviour
+public class UpPlatform : MonoBehaviour
 {
     public GameObject[] obstacles;
-    private bool stepped = false;
+    public GameObject[] coins;
 
     private void OnEnable()
     {
-        stepped = false;
-
         for (int i = 0; i < obstacles.Length; i++)
         {
-            if (Random.Range(0,3) == 0)
+            if (Random.Range(0, 3) == 0)
             {
                 obstacles[i].SetActive(true);
             }
@@ -20,16 +18,10 @@ public class ObstaclePlatform : MonoBehaviour
                 obstacles[i].SetActive(false);
             }
         }
-    }
 
-    private void OnEnter2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Player" && !stepped)
+        foreach (GameObject coin in coins)
         {
-            stepped = true;
-            GameManager.instance.AddScore(10);
+            coin.SetActive(true);
         }
     }
-
-
 }

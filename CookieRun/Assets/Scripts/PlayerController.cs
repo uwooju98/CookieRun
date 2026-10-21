@@ -75,15 +75,13 @@ public class PlayerController : MonoBehaviour
                 isSlide = true;
                 playerRigidbody.linearVelocity = Vector2.zero;
             }
-
-            if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                slideCollider2D.offset = new Vector2(0f, -0.09f);
-                slideCollider2D.size = new Vector2(0.5f, 0.8f);
-                isSlide = false;
-            }
         }
-
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            slideCollider2D.offset = new Vector2(0f, -0.09f);
+            slideCollider2D.size = new Vector2(0.5f, 0.8f);
+            isSlide = false;
+        }
 
         animator.SetBool("Slid", isSlide);
         animator.SetBool("Grounded", isGrounded);
@@ -130,5 +128,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Coin"))
+        {
+            GameManager.instance.AddScore(10);
+            Debug.Log("코인");
+            gameObject.SetActive(false);
+
+        }
+    }
 
 }
