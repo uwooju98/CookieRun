@@ -7,9 +7,9 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            GameManager.instance.AddHp(2);
             GameManager.instance.AddScore(10);
             gameObject.SetActive(false);
-            
         }
     }
 }

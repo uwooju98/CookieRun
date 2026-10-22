@@ -5,10 +5,6 @@ public class Scroller : MonoBehaviour
     private float speed = 10f;
 
 
-    private void Awake()
-    {
-        
-    }
     private void Update()
     {
         if (!GameManager.instance.isGameOver)
@@ -16,7 +12,4 @@ public class Scroller : MonoBehaviour
             transform.Translate(Vector3.left * speed * Time.deltaTime);
         }   
     }
-    
-
-
 }

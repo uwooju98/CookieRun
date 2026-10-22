@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private AudioSource playerAudio;
 
+    public GameObject respawnPlatform;
+
 
     private Vector2 playerSpawnPoint;
     private float speed = 10f;
@@ -21,7 +24,10 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D slideCollider2D;
     private bool isSlide = false;
 
-
+    private void Awake()
+    {
+        respawnPlatform.SetActive(false);
+    }
     private void Start()
     {
         slideCollider2D = GetComponent<BoxCollider2D>();
@@ -29,6 +35,7 @@ public class PlayerController : MonoBehaviour
         playerRigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
+
     }
 
     private void Update()
@@ -85,15 +92,30 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("Slid", isSlide);
         animator.SetBool("Grounded", isGrounded);
+
+        if (GameManager.instance.IsDie())
+        {
+            Die();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Dead" && !isDead)
         {
-            Die();
+            GameManager.instance.AddHp(-10f);
+        }
+
+        if (other.tag == "Fall" && !isDead)
+        {
+            GameManager.instance.AddHp(-20f);
+            respawnPlatform.SetActive(true);
+            transform.position = playerSpawnPoint + new Vector2(0, 2f);
+            Invoke("DisablePlatform", 0.8f);
         }
     }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -101,7 +123,6 @@ public class PlayerController : MonoBehaviour
         if (collision.contacts[0].normal.y > 0.7f &&
             collision.collider.tag == "Platform")
         {
-            Debug.Log("이상");
             isGrounded = true;
             jumpCount = 0;
         }
@@ -112,6 +133,11 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
     }
 
+
+    void DisablePlatform()
+    {
+        respawnPlatform.SetActive(false);
+    }
     private void Die()
     {
         animator.SetTrigger("Die");
@@ -129,15 +155,5 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Coin"))
-        {
-            GameManager.instance.AddScore(10);
-            Debug.Log("코인");
-            gameObject.SetActive(false);
-
-        }
-    }
 
 }

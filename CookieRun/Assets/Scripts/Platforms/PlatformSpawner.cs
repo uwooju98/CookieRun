@@ -3,19 +3,16 @@ using UnityEngine;
 public class PlatformSpawner : MonoBehaviour
 {
     public GameObject[] PlatformPrefabs;
-    public int count = 10; // 생성할 발판의 개수
+    public int count = 8;
 
-    public float timeBetSpawnMin = 0.25f;
-    public float timeBetSpawnMax = 0.45f;
+    private float timeBetSpawnMin = 2.2f;
+    private float timeBetSpawnMax = 2.5f;
 
     private float timeBetSpawn;
 
-    public float yMin = -3.5f;
-    public float yMax = 1.5f;
-    
-    public float xMin = 1.4f;
-    private float xPos = 20f;
 
+    private float xPos = 20f;
+    private float yPos = -4.5f;
 
     private GameObject[] platforms;
     private int currentIndex = 0;
@@ -29,7 +26,7 @@ public class PlatformSpawner : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            platforms[i] = Instantiate(PlatformPrefabs[Random.Range(0,5)], poolPosition,Quaternion.identity);
+            platforms[i] = Instantiate(PlatformPrefabs[0], poolPosition, Quaternion.identity);
         }
 
         lastSpawnTime = 0f;
@@ -47,9 +44,7 @@ public class PlatformSpawner : MonoBehaviour
         {
             lastSpawnTime = Time.time;
 
-            timeBetSpawn = Random.Range(timeBetSpawnMin,timeBetSpawnMax);
-
-            float yPos = -4.5f;
+            timeBetSpawn = Random.Range(timeBetSpawnMin, timeBetSpawnMax);
 
             platforms[currentIndex].SetActive(false);
             platforms[currentIndex].SetActive(true);
@@ -62,7 +57,7 @@ public class PlatformSpawner : MonoBehaviour
                 currentIndex = 0;
             }
         }
-        
+
     }
 
 }
